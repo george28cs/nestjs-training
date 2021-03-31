@@ -4,7 +4,6 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import {
   ApiOperation,
   ApiQuery,
-  ApiResponse,
   ApiTags,
   ApiBody,
   ApiOkResponse,

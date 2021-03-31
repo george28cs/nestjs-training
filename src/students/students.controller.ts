@@ -7,8 +7,9 @@ import {
   ApiResponse,
   ApiTags,
   ApiBody,
+  ApiOkResponse,
+  getSchemaPath,
 } from '@nestjs/swagger';
-import { object } from 'joi';
 
 @ApiTags('students')
 @Controller('students')
@@ -20,9 +21,22 @@ export class StudentsController {
     description: 'Datos para creación de estudiantes',
     type: CreateStudentDto,
   })
-  @ApiResponse({
-    status: 200,
-    type: CreateStudentDto,
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            status: {
+              type: 'number',
+            },
+            data: {
+              type: 'array',
+              items: { $ref: getSchemaPath(CreateStudentDto) },
+            },
+          },
+        },
+      ],
+    },
   })
   @Post()
   async create(@Body() createStudentDto: CreateStudentDto) {
@@ -35,7 +49,22 @@ export class StudentsController {
   }
 
   @ApiOperation({ summary: 'Ruta para consultar estudiantes registrados' })
-  @ApiResponse({ status: 200, type: object })
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        {
+          properties: {
+            status: {
+              type: 'number',
+            },
+            data: {
+              type: 'object',
+            },
+          },
+        },
+      ],
+    },
+  })
   @ApiQuery({
     name: 'createdAt',
     description: 'Fecha de creación',
